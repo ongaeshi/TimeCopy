@@ -25,16 +25,34 @@ win.add(util.createButton('平成24年2月7日(水) 00:07' , 130));
 win.add(util.createButton('2012/02/07 01:11'         , 190));
 win.add(util.createButton('2月7日(水) 00:07'         , 250));
 
-var label = Titanium.UI.createLabel({
-  color:'#999',
-  text:'ボタンを押せば現在時刻をクリップボードにコピー',
+// ラベル (ヘルプ画面に追加するかもしれない)
+// var label = Titanium.UI.createLabel({
+//   color:'#555',
+//   text:'ボタンを押すと現在時刻をクリップボードにコピー',
+//   font:{fontSize:12},
+//   textAlign:'center',
+//   width:'auto',
+//   top: 370
+// });
+
+//win.add(label);
+
+// テキストフィールド
+var textField = Titanium.UI.createTextField({
+  color:'#336699',
+  top:330,
+  //left:10,
+  width:210,
+  height:25,
   font:{fontSize:12},
-  textAlign:'center',
-  width:'auto',
-  top: 310
+  hintText:'時刻の後ろに付けるテキスト',
+  keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
+  returnKeyType:Titanium.UI.RETURNKEY_DEFAULT,
+  borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+  clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ALWAYS
 });
 
-win.add(label);
+win.add(textField);
 win.hideTabBar();
 
 // タブ設定
