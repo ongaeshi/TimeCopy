@@ -19,11 +19,13 @@ var win = Titanium.UI.createWindow({
   backgroundColor:'#fff'
 });
 
-win.add(util.createButton('2012年2月7日(水) 00:07:00', 10));
-win.add(util.createButton('2012年2月7日(水) 00:07'   , 70));
-win.add(util.createButton('平成24年2月7日(水) 00:07' , 130));
-win.add(util.createButton('2012/02/07 01:11'         , 190));
-win.add(util.createButton('2月7日(水) 00:07'         , 250));
+// 時計ボタンの表示
+var date = new Date();
+win.add(util.createButton(date, "%Y年%m1月%d1日 %H:%M:%S",  10));   // 2012年2月7日(水) 00:07:34
+win.add(util.createButton(date, "%Y年%m1月%d1日 %H:%M",  70));      // 2012年2月7日(水) 00:07
+win.add(util.createButton(date, "平成%YW年%m1月%d1日 %H:%M", 130)); // 平成24年2月7日(水) 00:07
+win.add(util.createButton(date, "%Y/%m/%d %H:%M", 190));            // 2011/02/08 01:34
+win.add(util.createButton(date, "%m1月%d1日 %H:%M", 250));          // 2012年2月7日(水) 00:07:34
 
 // ラベル (ヘルプ画面に追加するかもしれない)
 // var label = Titanium.UI.createLabel({
