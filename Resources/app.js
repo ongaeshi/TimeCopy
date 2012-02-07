@@ -40,7 +40,7 @@ win.add(util.createButton('2月7日(水) 00:07'         , 250));
 // テキストフィールド
 var textField = Titanium.UI.createTextField({
   color:'#336699',
-  top:330,
+  top:340,
   //left:10,
   width:210,
   height:25,
