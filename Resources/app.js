@@ -22,7 +22,7 @@ win.hideTabBar();
 // --------------------------------------------------------------------------------
 var textField = Titanium.UI.createTextField({
   color:'#336699',
-  top:320,
+  top:280,
   //left:10,
   width:250,
   height:40,
@@ -40,11 +40,10 @@ win.add(textField);
 // 時計ボタン
 // --------------------------------------------------------------------------------
 var date = new Date();
-win.add(util.createButton("%Y年%m1月%d1日 %H:%M:%S",    10, date, textField)); // 2012年2月7日(水) 00:07:34
-win.add(util.createButton("%Y年%m1月%d1日 %H:%M",       70, date, textField)); // 2012年2月7日(水) 00:07
-win.add(util.createButton("平成%YJ年%m1月%d1日 %H:%M", 130, date, textField)); // 平成24年2月7日(水) 00:07
-win.add(util.createButton("%Y/%m/%d %H:%M",            190, date, textField)); // 2011/02/08 01:34
-win.add(util.createButton("%m1月%d1日 %H:%M",          250, date, textField)); // 2012年2月7日(水) 00:07:34
+win.add(util.createButton("%Y年%m1月%d1日 %H:%M:%S",       10, date, textField)); // 2012年2月7日(水) 00:07:34
+win.add(util.createButton("平成%YJ年%m1月%d1日 %H:%M:%S",  70, date, textField)); // 平成24年2月7日(水) 00:07:34
+win.add(util.createButton("%Y/%m/%d %H:%M:%S",            130, date, textField)); // 2011/02/08 01:34:34
+win.add(util.createButton("%Y-%m-%d %H:%M:%S",            190, date, textField)); // 2011-02-08 01:34:34
 
 // --------------------------------------------------------------------------------
 // 下部のツールバー
