@@ -6,10 +6,18 @@
 var dateLib = require('date-lib');
 
 var alert = Titanium.UI.createAlertDialog({
-  title:'Copy to clipboard'
+  title: 'Copy to clipboard',
+  buttonNames: null
 });
 
-exports.createButton = function (date, format, top) {
+function getText(title, value) {
+  if (value == "")
+    return title;
+  else
+    return title + " " + value;
+}
+
+exports.createButton = function (format, top, date, textField) {
   var button = Titanium.UI.createButton({
     title: dateLib.format(date, format),
     height: 50,
@@ -19,12 +27,13 @@ exports.createButton = function (date, format, top) {
   });
 
   button.addEventListener('click', function () {
+    var text = getText(button.title, textField.value);
+    
     // クリップボードにコピー
-    Ti.UI.Clipboard.setText(button.title);
+    Ti.UI.Clipboard.setText(text);
 
     // アラート
-    alert.buttonNames = null;
-    alert.message = button.title;
+    alert.message = text;
     alert.show();
   });
 
