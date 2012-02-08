@@ -26,7 +26,7 @@ exports.Sec   =  function (date) { return formatNum(2, exports.sec(date)) }
 
 exports.format = function(date, format) {
   var r = format;
-  r = r.replace("%YW", exports.heisei(date), "g");
+  r = r.replace("%YJ", exports.heisei(date), "g");
   r = r.replace("%Y", exports.year(date), "g");
   r = r.replace("%m1", exports.month(date), "g");
   r = r.replace("%m", exports.Month(date), "g");

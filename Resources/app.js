@@ -23,7 +23,7 @@ var win = Titanium.UI.createWindow({
 var date = new Date();
 win.add(util.createButton(date, "%Y年%m1月%d1日 %H:%M:%S",  10));   // 2012年2月7日(水) 00:07:34
 win.add(util.createButton(date, "%Y年%m1月%d1日 %H:%M",  70));      // 2012年2月7日(水) 00:07
-win.add(util.createButton(date, "平成%YW年%m1月%d1日 %H:%M", 130)); // 平成24年2月7日(水) 00:07
+win.add(util.createButton(date, "平成%YJ年%m1月%d1日 %H:%M", 130)); // 平成24年2月7日(水) 00:07
 win.add(util.createButton(date, "%Y/%m/%d %H:%M", 190));            // 2011/02/08 01:34
 win.add(util.createButton(date, "%m1月%d1日 %H:%M", 250));          // 2012年2月7日(水) 00:07:34
 
