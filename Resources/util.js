@@ -44,4 +44,29 @@ exports.createButton = function (format, top, date, textField) {
   return button;
 }
 
+exports.createSpacer = function() {
+  return Titanium.UI.createButton({
+    systemButton:Titanium.UI.iPhone.SystemButton.FLEXIBLE_SPACE
+  });
+}
+
+exports.createSelector = function () {
+  return Titanium.UI.createButtonBar({
+    labels:['年', '月', '日', '時', '分', '秒'],
+    backgroundColor:'#336699'
+  });
+}
+
+// ラベル (ヘルプ画面に追加するかもしれない)
+// var label = Titanium.UI.createLabel({
+//   color:'#555',
+//   text:'ボタンを押すと現在時刻をクリップボードにコピー',
+//   font:{fontSize:12},
+//   textAlign:'center',
+//   width:'auto',
+//   top: 370
+// });
+//win.add(label);
+
+
 
