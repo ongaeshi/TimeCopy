@@ -19,6 +19,10 @@ exports.createButton = function (date, format, top) {
   });
 
   button.addEventListener('click', function () {
+    // クリップボードにコピー
+    Ti.UI.Clipboard.setText(button.title);
+
+    // アラート
     alert.buttonNames = null;
     alert.message = button.title;
     alert.show();
