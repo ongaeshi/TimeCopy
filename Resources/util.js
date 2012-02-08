@@ -10,13 +10,12 @@ var alert = Titanium.UI.createAlertDialog({
 });
 
 exports.createButton = function (date, format, top) {
-  var title = dateLib.format(date, format);
-  
   var button = Titanium.UI.createButton({
-    title: title,
+    title: dateLib.format(date, format),
     height: 50,
     width: 250,
-    top: top
+    top: top,
+    font: {fontSize:18, fontWeight:'bold'}
   });
 
   button.addEventListener('click', function () {
@@ -24,6 +23,10 @@ exports.createButton = function (date, format, top) {
     alert.message = button.title;
     alert.show();
   });
+
+  setInterval(function () {
+    button.title = dateLib.format(new Date(), format);
+  }, 1000);
 
   return button;
 }
