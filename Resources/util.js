@@ -76,7 +76,7 @@ exports.createSpacer = function() {
 
 exports.createSelector = function () {
   return Titanium.UI.createButtonBar({
-    labels:['    年    ', '日付', '時刻', '秒'],
+    labels:['    日付    ', '時刻'],
     backgroundColor:'#336699'
   });
 }

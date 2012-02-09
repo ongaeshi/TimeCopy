@@ -10,8 +10,10 @@ var dateLib = require('date-lib');
 Titanium.UI.setBackgroundColor('#000');
 
 // 共通パラメータ
-var gParam = {
-    timeFlag: 0xf
+var gWork = {
+  timeFlag: 0xf,
+  dateIndex: 0,
+  timeIndex: 0,
 };
 
 // --------------------------------------------------------------------------------
@@ -63,7 +65,7 @@ for (var i = 0; i < timeButtons.length; i++) {
 function updateButtons() {
   var date = new Date();
   for (var i = 0; i < timeButtons.length; i++)
-    timeButtons[i].update(date, gParam.timeFlag);
+    timeButtons[i].update(date, gWork.timeFlag);
 }
 
 // 起動時に一回更新
@@ -80,26 +82,24 @@ setInterval(function () {
 var spacer = util.createSpacer();
 var selector = util.createSelector();
 
-selector.addEventListener('click', function(e) {
-  const FLAG_YEAR = 0x8; 
-  const FLAG_DATE = 0x4;
-  const FLAG_TIME = 0x2;
-  const FLAG_SEC  = 0x1;
+var dateTable = [util.flags.YEAR | util.flags.DATE, util.flags.DATE, 0];
+var timeTable = [util.flags.TIME | util.flags.SEC,  util.flags.TIME, 0];
 
+selector.addEventListener('click', function(e) {
   switch (e.index) {
   case 0:
-    gParam.timeFlag ^= util.flags.YEAR;
+    gWork.dateIndex++;
+    if (gWork.dateIndex >= dateTable.length)
+      gWork.dateIndex = 0;
     break;
   case 1:
-    gParam.timeFlag ^= util.flags.DATE;
-    break;
-  case 2:
-    gParam.timeFlag ^= util.flags.TIME;
-    break;
-  case 3:
-    gParam.timeFlag ^= util.flags.SEC;
+    gWork.timeIndex++;
+    if (gWork.timeIndex >= timeTable.length)
+      gWork.timeIndex = 0;
     break;
   }
+
+  gWork.timeFlag = dateTable[gWork.dateIndex] | timeTable[gWork.timeIndex];
 
   updateButtons();
 });
