@@ -4,6 +4,7 @@
 // @date   2012/02/07
 
 var util = require('util');
+var dateLib = require('date-lib');
 
 // 背景色
 Titanium.UI.setBackgroundColor('#000');
@@ -40,10 +41,16 @@ win.add(textField);
 // 時計ボタン
 // --------------------------------------------------------------------------------
 var date = new Date();
-win.add(util.createButton("%Y年%m1月%d1日 %H:%M:%S",       10, date, textField)); // 2012年2月7日(水) 00:07:34
-win.add(util.createButton("平成%YJ年%m1月%d1日 %H:%M:%S",  70, date, textField)); // 平成24年2月7日(水) 00:07:34
-win.add(util.createButton("%Y/%m/%d %H:%M:%S",            130, date, textField)); // 2011/02/08 01:34:34
-win.add(util.createButton("%Y-%m-%d %H:%M:%S",            190, date, textField)); // 2011-02-08 01:34:34
+
+var timeButtons = [];
+timeButtons.push(util.createButton("%Y年%m1月%d1日 %H:%M:%S",       10, date, textField)); // 2012年2月7日(水) 00:07:34
+timeButtons.push(util.createButton("平成%YJ年%m1月%d1日 %H:%M:%S",  70, date, textField)); // 平成24年2月7日(水) 00:07:34
+timeButtons.push(util.createButton("%Y/%m/%d %H:%M:%S",            130, date, textField)); // 2011/02/08 01:34:34
+timeButtons.push(util.createButton("%Y-%m-%d %H:%M:%S",            190, date, textField)); // 2011-02-08 01:34:34
+
+for (var i = 0; i < timeButtons.length; i++) {
+  win.add(timeButtons[i].button);
+}
 
 // --------------------------------------------------------------------------------
 // 下部のツールバー
@@ -67,3 +74,19 @@ tabGroup.addTab(Titanium.UI.createTab({window: win}));
 // 表示
 tabGroup.open();
 
+// --------------------------------------------------------------------------------
+// 更新処理
+// --------------------------------------------------------------------------------
+function updateButtons() {
+  var date = new Date();
+  for (var i = 0; i < timeButtons.length; i++)
+    timeButtons[i].update(date);
+}
+
+// 起動時に一回更新
+updateButtons();
+
+// 定期的に更新
+setInterval(function () {
+  updateButtons();
+}, 1000);

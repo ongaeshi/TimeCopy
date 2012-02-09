@@ -37,11 +37,10 @@ exports.createButton = function (format, top, date, textField) {
     alert.show();
   });
 
-  setInterval(function () {
-    button.title = dateLib.format(new Date(), format);
-  }, 1000);
-
-  return button;
+  return {
+    button: button,
+    update: function(date) {  button.title = dateLib.format(date, format); }
+  };
 }
 
 exports.createSpacer = function() {
@@ -52,7 +51,7 @@ exports.createSpacer = function() {
 
 exports.createSelector = function () {
   return Titanium.UI.createButtonBar({
-    labels:['  年  ', '月', '日', '時', '分', '秒'],
+    labels:['    年    ', '日付', '時刻', '秒'],
     backgroundColor:'#336699'
   });
 }
