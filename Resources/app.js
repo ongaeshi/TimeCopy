@@ -11,9 +11,9 @@ Titanium.UI.setBackgroundColor('#000');
 
 // 共通パラメータ
 var gWork = {
-  timeFlag: 0xf,
+  timeFlag: util.flags.YEAR | util.flags.DATE | util.flags.TIME,
   dateIndex: 0,
-  timeIndex: 0,
+  timeIndex: 1,
 };
 
 // --------------------------------------------------------------------------------
@@ -30,19 +30,33 @@ win.hideTabBar();
 // --------------------------------------------------------------------------------
 var textField = Titanium.UI.createTextField({
   color:'#336699',
-  top:280,
+  top:10,
   //left:10,
-  width:250,
-  height:40,
+  width:280,
+  height:35,
   font:{fontSize:15},
-  hintText:'後ろに付けるテキスト',
+  hintText:'一言',
   keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
   returnKeyType:Titanium.UI.RETURNKEY_DEFAULT,
   borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
   clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ALWAYS,
-  textAlign:'center'
+  textAlign:'center',
 });
 win.add(textField);
+
+// --------------------------------------------------------------------------------
+// ラベル
+// --------------------------------------------------------------------------------
+var label = Titanium.UI.createLabel({
+  text:'ボタンを押すとクリップボードにコピーします。',
+  color:'#555',
+  top: 60,
+  width:'auto',
+  height:'auto',
+  textAlign:'center',
+  font:{fontSize:12}
+});
+win.add(label);
 
 // --------------------------------------------------------------------------------
 // 時計ボタン
@@ -50,10 +64,10 @@ win.add(textField);
 var date = new Date();
 
 var timeButtons = [];
-timeButtons.push(util.createButton(["%Y年", "%m1月%d1日", "%H:%M", ":%S"],       10, date, textField)); // 2012年2月7日(水) 00:07:34
-timeButtons.push(util.createButton(["平成%YJ年", "%m1月%d1日", "%H時%M分", "%S秒"],  70, date, textField)); // 平成24年2月7日(水) 00:07:34
-timeButtons.push(util.createButton(["%Y/", "%m/%d", "%H:%M", ":%S"],            130, date, textField)); // 2011/02/08 01:34:34
-timeButtons.push(util.createButton(["%Y-", "%m-%d", "%H:%M", ":%S"],            190, date, textField)); // 2011-02-08 01:34:34
+timeButtons.push(util.createButton(["%Y/", "%m/%d", "%H:%M", ":%S"],            100, date, textField)); // 2011/02/08 01:34:34
+timeButtons.push(util.createButton(["%Y年", "%m1月%d1日", "%H:%M", ":%S"],       160, date, textField)); // 2012年2月7日(水) 00:07:34
+timeButtons.push(util.createButton(["平成%YJ年", "%m1月%d1日", "%H時%M分", "%S秒"],  220, date, textField)); // 平成24年2月7日(水) 00:07:34
+timeButtons.push(util.createButton(["%Y-", "%m-%d", "%H:%M", ":%S"],            280, date, textField)); // 2011-02-08 01:34:34
 
 for (var i = 0; i < timeButtons.length; i++) {
   win.add(timeButtons[i].button);
@@ -83,7 +97,7 @@ var spacer = util.createSpacer();
 var selector = util.createSelector();
 
 var dateTable = [util.flags.YEAR | util.flags.DATE, util.flags.DATE, 0];
-var timeTable = [util.flags.TIME | util.flags.SEC,  util.flags.TIME, 0];
+var timeTable = [util.flags.TIME | util.flags.SEC, util.flags.TIME, 0];
 
 selector.addEventListener('click', function(e) {
   switch (e.index) {

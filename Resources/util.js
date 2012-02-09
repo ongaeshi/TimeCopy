@@ -80,17 +80,3 @@ exports.createSelector = function () {
     backgroundColor:'#336699'
   });
 }
-
-// ラベル (ヘルプ画面に追加するかもしれない)
-// var label = Titanium.UI.createLabel({
-//   color:'#555',
-//   text:'ボタンを押すと現在時刻をクリップボードにコピー',
-//   font:{fontSize:12},
-//   textAlign:'center',
-//   width:'auto',
-//   top: 370
-// });
-//win.add(label);
-
-
-
