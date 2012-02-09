@@ -9,6 +9,11 @@ var dateLib = require('date-lib');
 // 背景色
 Titanium.UI.setBackgroundColor('#000');
 
+// 共通パラメータ
+var gParam = {
+    timeFlag: 0xf
+};
+
 // --------------------------------------------------------------------------------
 // メインウィンドウ
 // --------------------------------------------------------------------------------
@@ -43,14 +48,31 @@ win.add(textField);
 var date = new Date();
 
 var timeButtons = [];
-timeButtons.push(util.createButton("%Y年%m1月%d1日 %H:%M:%S",       10, date, textField)); // 2012年2月7日(水) 00:07:34
-timeButtons.push(util.createButton("平成%YJ年%m1月%d1日 %H:%M:%S",  70, date, textField)); // 平成24年2月7日(水) 00:07:34
-timeButtons.push(util.createButton("%Y/%m/%d %H:%M:%S",            130, date, textField)); // 2011/02/08 01:34:34
-timeButtons.push(util.createButton("%Y-%m-%d %H:%M:%S",            190, date, textField)); // 2011-02-08 01:34:34
+timeButtons.push(util.createButton(["%Y年", "%m1月%d1日", "%H:%M", ":%S"],       10, date, textField)); // 2012年2月7日(水) 00:07:34
+timeButtons.push(util.createButton(["平成%YJ年", "%m1月%d1日", "%H時%M分", "%S秒"],  70, date, textField)); // 平成24年2月7日(水) 00:07:34
+timeButtons.push(util.createButton(["%Y/", "%m/%d", "%H:%M", ":%S"],            130, date, textField)); // 2011/02/08 01:34:34
+timeButtons.push(util.createButton(["%Y-", "%m-%d", "%H:%M", ":%S"],            190, date, textField)); // 2011-02-08 01:34:34
 
 for (var i = 0; i < timeButtons.length; i++) {
   win.add(timeButtons[i].button);
 }
+
+// --------------------------------------------------------------------------------
+// 更新処理
+// --------------------------------------------------------------------------------
+function updateButtons() {
+  var date = new Date();
+  for (var i = 0; i < timeButtons.length; i++)
+    timeButtons[i].update(date, gParam.timeFlag);
+}
+
+// 起動時に一回更新
+updateButtons();
+
+// 定期的に更新
+setInterval(function () {
+  updateButtons();
+}, 1000);
 
 // --------------------------------------------------------------------------------
 // 下部のツールバー
@@ -59,7 +81,27 @@ var spacer = util.createSpacer();
 var selector = util.createSelector();
 
 selector.addEventListener('click', function(e) {
-   // e.indexにクリックされたボタンのindexがセットされます
+  const FLAG_YEAR = 0x8; 
+  const FLAG_DATE = 0x4;
+  const FLAG_TIME = 0x2;
+  const FLAG_SEC  = 0x1;
+
+  switch (e.index) {
+  case 0:
+    gParam.timeFlag ^= util.flags.YEAR;
+    break;
+  case 1:
+    gParam.timeFlag ^= util.flags.DATE;
+    break;
+  case 2:
+    gParam.timeFlag ^= util.flags.TIME;
+    break;
+  case 3:
+    gParam.timeFlag ^= util.flags.SEC;
+    break;
+  }
+
+  updateButtons();
 });
 
 // Windowの下部にツールバーを設定
@@ -74,19 +116,3 @@ tabGroup.addTab(Titanium.UI.createTab({window: win}));
 // 表示
 tabGroup.open();
 
-// --------------------------------------------------------------------------------
-// 更新処理
-// --------------------------------------------------------------------------------
-function updateButtons() {
-  var date = new Date();
-  for (var i = 0; i < timeButtons.length; i++)
-    timeButtons[i].update(date);
-}
-
-// 起動時に一回更新
-updateButtons();
-
-// 定期的に更新
-setInterval(function () {
-  updateButtons();
-}, 1000);

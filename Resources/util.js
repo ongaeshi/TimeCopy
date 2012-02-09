@@ -5,6 +5,13 @@
 
 var dateLib = require('date-lib');
 
+exports.flags = {
+  YEAR: 0x8, 
+  DATE: 0x4,
+  TIME: 0x2,
+  SEC:  0x1
+}
+
 var alert = Titanium.UI.createAlertDialog({
   title: 'Copy to clipboard',
   buttonNames: null
@@ -17,11 +24,29 @@ function getText(title, value) {
     return title + " " + value;
 }
 
-exports.createButton = function (format, top, date, textField) {
+function calcFormat(src, flag) {
+  var result = ["", ""];
+
+  if (flag & exports.flags.YEAR)
+    result[0] += src[0];
+
+  if (flag & exports.flags.DATE)
+    result[0] += src[1];
+
+  if (flag & exports.flags.TIME)
+    result[1] += src[2];
+
+  if (flag & exports.flags.SEC)
+    result[1] += src[3];
+
+  return result.join(" ");
+}
+
+exports.createButton = function (src, top, date, textField) {
   var button = Titanium.UI.createButton({
-    title: dateLib.format(date, format),
+    title: dateLib.format(date, calcFormat(src, 0xf)),
     height: 50,
-    width: 250,
+    width: 280,
     top: top,
     font: {fontSize:18, fontWeight:'bold'}
   });
@@ -39,7 +64,7 @@ exports.createButton = function (format, top, date, textField) {
 
   return {
     button: button,
-    update: function(date) {  button.title = dateLib.format(date, format); }
+    update: function(date, flag) {  button.title = dateLib.format(date, calcFormat(src, flag)); }
   };
 }
 
