@@ -55,7 +55,7 @@ exports.createButton = function (src, top, date, textField) {
     var text = getText(button.title, textField.value);
     
     // クリップボードにコピー
-    Ti.UI.Clipboard.setText(text);
+    Ti.UI.Clipboard.setText(text + "\n");
 
     // アラート
     alert.message = text;
