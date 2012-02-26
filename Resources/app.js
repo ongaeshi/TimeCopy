@@ -1,64 +1,132 @@
-// this sets the background color of the master UIView (when there are no windows/tab groups on it)
+//
+// @brief
+// @author ongaeshi
+// @date   2012/02/07
+
+var util = require('util');
+var dateLib = require('date-lib');
+
+// 背景色
 Titanium.UI.setBackgroundColor('#000');
 
-// create tab group
+// 共通パラメータ
+var gWork = {
+  timeFlag: util.flags.YEAR | util.flags.DATE | util.flags.TIME,
+  dateIndex: 0,
+  timeIndex: 1,
+};
+
+// --------------------------------------------------------------------------------
+// メインウィンドウ
+// --------------------------------------------------------------------------------
+var win = Titanium.UI.createWindow({  
+  title:'TimeCopy',
+  backgroundColor:'#fff'
+});
+win.hideTabBar();
+
+// --------------------------------------------------------------------------------
+// 後ろに付けるテキスト
+// --------------------------------------------------------------------------------
+var textField = Titanium.UI.createTextField({
+  color:'#336699',
+  top:10,
+  //left:10,
+  width:280,
+  height:35,
+  font:{fontSize:15},
+  hintText:'一言',
+  keyboardType:Titanium.UI.KEYBOARD_DEFAULT,
+  returnKeyType:Titanium.UI.RETURNKEY_DEFAULT,
+  borderStyle:Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+  clearButtonMode: Titanium.UI.INPUT_BUTTONMODE_ALWAYS,
+  textAlign:'center',
+});
+win.add(textField);
+
+// --------------------------------------------------------------------------------
+// ラベル
+// --------------------------------------------------------------------------------
+var label = Titanium.UI.createLabel({
+  text:'ボタンを押すとクリップボードにコピーします。',
+  color:'#555',
+  top: 60,
+  width:'auto',
+  height:'auto',
+  textAlign:'center',
+  font:{fontSize:12}
+});
+win.add(label);
+
+// --------------------------------------------------------------------------------
+// 時計ボタン
+// --------------------------------------------------------------------------------
+var date = new Date();
+
+var timeButtons = [];
+timeButtons.push(util.createButton(["%Y/", "%m/%d", "%H:%M", ":%S"],            100, date, textField)); // 2011/02/08 01:34:34
+timeButtons.push(util.createButton(["%Y年", "%m1月%d1日", "%H:%M", ":%S"],       160, date, textField)); // 2012年2月7日(水) 00:07:34
+timeButtons.push(util.createButton(["平成%YJ年", "%m1月%d1日", "%H時%M分", "%S秒"],  220, date, textField)); // 平成24年2月7日(水) 00:07:34
+timeButtons.push(util.createButton(["%Y-", "%m-%d", "%H:%M", ":%S"],            280, date, textField)); // 2011-02-08 01:34:34
+
+for (var i = 0; i < timeButtons.length; i++) {
+  win.add(timeButtons[i].button);
+}
+
+// --------------------------------------------------------------------------------
+// 更新処理
+// --------------------------------------------------------------------------------
+function updateButtons() {
+  var date = new Date();
+  for (var i = 0; i < timeButtons.length; i++)
+    timeButtons[i].update(date, gWork.timeFlag);
+}
+
+// 起動時に一回更新
+updateButtons();
+
+// 定期的に更新
+setInterval(function () {
+  updateButtons();
+}, 1000);
+
+// --------------------------------------------------------------------------------
+// 下部のツールバー
+// --------------------------------------------------------------------------------
+var spacer = util.createSpacer();
+var selector = util.createSelector();
+
+var dateTable = [util.flags.YEAR | util.flags.DATE, util.flags.DATE, 0];
+var timeTable = [util.flags.TIME | util.flags.SEC, util.flags.TIME, 0];
+
+selector.addEventListener('click', function(e) {
+  switch (e.index) {
+  case 0:
+    gWork.dateIndex++;
+    if (gWork.dateIndex >= dateTable.length)
+      gWork.dateIndex = 0;
+    break;
+  case 1:
+    gWork.timeIndex++;
+    if (gWork.timeIndex >= timeTable.length)
+      gWork.timeIndex = 0;
+    break;
+  }
+
+  gWork.timeFlag = dateTable[gWork.dateIndex] | timeTable[gWork.timeIndex];
+
+  updateButtons();
+});
+
+// Windowの下部にツールバーを設定
+win.setToolbar([spacer, selector, spacer]);
+
+// --------------------------------------------------------------------------------
+// タブ設定
+// --------------------------------------------------------------------------------
 var tabGroup = Titanium.UI.createTabGroup();
+tabGroup.addTab(Titanium.UI.createTab({window: win}));
 
-
-//
-// create base UI tab and root window
-//
-var win1 = Titanium.UI.createWindow({  
-    title:'Tab 1',
-    backgroundColor:'#fff'
-});
-var tab1 = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    title:'Tab 1',
-    window:win1
-});
-
-var label1 = Titanium.UI.createLabel({
-	color:'#999',
-	text:'I am Window 1',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
-	textAlign:'center',
-	width:'auto'
-});
-
-win1.add(label1);
-
-//
-// create controls tab and root window
-//
-var win2 = Titanium.UI.createWindow({  
-    title:'Tab 2',
-    backgroundColor:'#fff'
-});
-var tab2 = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
-    title:'Tab 2',
-    window:win2
-});
-
-var label2 = Titanium.UI.createLabel({
-	color:'#999',
-	text:'I am Window 2',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
-	textAlign:'center',
-	width:'auto'
-});
-
-win2.add(label2);
-
-
-
-//
-//  add tabs
-//
-tabGroup.addTab(tab1);  
-tabGroup.addTab(tab2);  
-
-
-// open tab group
+// 表示
 tabGroup.open();
+
